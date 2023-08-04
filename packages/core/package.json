@@ -1,0 +1,30 @@
+{
+  "name": "@use-symbology-scanner/core",
+  "version": "1.0.0",
+  "main": "dist/use-symbology-scanner-core.cjs.js",
+  "module": "dist/use-symbology-scanner-core.esm.js",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "module": "./dist/use-symbology-scanner-core.esm.js",
+      "default": "./dist/use-symbology-scanner-core.cjs.js"
+    },
+    "./types": {
+      "module": "./types/dist/use-symbology-scanner-core-types.esm.js",
+      "default": "./types/dist/use-symbology-scanner-core-types.cjs.js"
+    },
+    "./symbologies": {
+      "module": "./symbologies/dist/use-symbology-scanner-core-symbologies.esm.js",
+      "default": "./symbologies/dist/use-symbology-scanner-core-symbologies.cjs.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "preconstruct": {
+    "exports": true,
+    "entrypoints": [
+      "./index.ts",
+      "./types.ts",
+      "./symbologies.ts"
+    ]
+  }
+}

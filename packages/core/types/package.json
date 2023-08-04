@@ -1,0 +1,4 @@
+{
+    "main": "dist/use-symbology-scanner-core-types.cjs.js",
+    "module": "dist/use-symbology-scanner-core-types.esm.js"
+  }

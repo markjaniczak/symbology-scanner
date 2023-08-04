@@ -1,0 +1,1 @@
+export { useSymbologyScanner } from './useSymbologyScanner'

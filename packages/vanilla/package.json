@@ -1,0 +1,11 @@
+{
+    "name": "@use-symbology-scanner/vanilla",
+    "version": "1.0.0",
+    "main": "dist/use-symbology-scanner-vanilla.cjs.js",
+    "module": "dist/use-symbology-scanner-vanilla.esm.js",
+    "license": "MIT",
+    "dependencies": {
+      "@use-symbology-scanner/core": "1.0.0"
+    }
+  }
+  
