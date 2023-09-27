@@ -1,6 +1,6 @@
 {
   "name": "@use-symbology-scanner/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/use-symbology-scanner-core.cjs.js",
   "module": "dist/use-symbology-scanner-core.esm.js",
   "license": "MIT",
