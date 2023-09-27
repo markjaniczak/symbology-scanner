@@ -1,5 +1,4 @@
-/** A regex pattern expressing a symbology. */
-export type Symbology = string
+import { Symbology } from "./Symbology"
 
 export const STANDARD_SYMBOLOGY_KEYS = [
   'UPC-A',
@@ -23,27 +22,73 @@ export const STANDARD_SYMBOLOGY_KEYS = [
 
 export type StandardSymbologyKey = (typeof STANDARD_SYMBOLOGY_KEYS)[number]
 
+// prettier-ignore
+const STANDARD_SYMBOLOGY_OPTIONS = {
+  'UPC-A': {
+    allowedCharacters: /[\d]/,
+    minLength: 12,
+    maxLength: 12
+  },
+  'UPC-E': {
+    allowedCharacters: /[\d]/,
+    minLength: 8,
+    maxLength: 8
+  },
+  'EAN 8': {
+    allowedCharacters: /[\d]/,
+    minLength: 8,
+    maxLength: 8
+  },
+  'EAN 13': {
+    allowedCharacters: /[\d]/,
+    minLength: 13,
+    maxLength: 13
+  },
+  'Codabar': {
+    allowedCharacters: /[\d\-\$\:\/\.\+]/,
+  },
+  'Code 11': {
+    allowedCharacters: /[\d\-]/,
+  },
+  'Code 39': {
+    allowedCharacters: /[\dA-Z\ \-\.\$\/\+\%]/,
+  },
+  'Code 93': {
+    allowedCharacters: /[\dA-Z\ \-\.\$\/\+\%]/,
+  },
+  'Code 128': {
+    allowedCharacters: /[ -~]/,
+  },
+  'Code 25 Interleaved': {
+    allowedCharacters: /[\d]/,
+  },
+  'Code 25 Industrial': {
+    allowedCharacters: /[\d]/,
+  },
+  'MSI Code': {
+    allowedCharacters: /[\d]/,
+  },
+  'QR Code': {
+    allowedCharacters: /[\x00-\x7F]/,
+  },
+  'PDF417': {
+    allowedCharacters: /[\x00-\x7F]/,
+  },
+  'Data Matrix': {
+    allowedCharacters: /[\x00-\x7F]/,
+  },
+  'Aztec Code': {
+    allowedCharacters: /[\x00-\x7F]/,
+  },
+  'Dot Code': {
+    allowedCharacters: /[\x00-\xFF]/,
+  }
+}
+
 export type StandardSymbologies = {
   [K in (typeof STANDARD_SYMBOLOGY_KEYS)[number]]: Symbology
 }
 
-// prettier-ignore
-export const STANDARD_SYMBOLOGIES: StandardSymbologies = {
-  'UPC-A': '^[0-9]{12}$',
-  'UPC-E': '^[0-9]{8}$',
-  'EAN 8': '^[0-9]{8}$',
-  'EAN 13': '^[0-9]{13}$',
-  'Codabar': '^[0-9\-\$\:\/\.\+]+$',
-  'Code 11': '^[0-9\-]+$',
-  'Code 39': '^[0-9A-Z\ \-\.\$\/\+\%]+$',
-  'Code 93': '^[0-9A-Z\ \-\.\$\/\+\%]+$',
-  'Code 128': '^[ -~]+$',
-  'Code 25 Interleaved': '^[0-9]+$',
-  'Code 25 Industrial': '^[0-9]+$',
-  'MSI Code': '^[0-9]+$',
-  'QR Code': '^[\x00-\x7F]+$',
-  'PDF417': '^[\x00-\x7F]+$',
-  'Data Matrix': '^[\x00-\x7F]+$',
-  'Aztec Code': '^[\x00-\x7F]+$',
-  'Dot Code': '^[\x00-\xFF]+$'
-}
+export const STANDARD_SYMBOLOGIES = Object.fromEntries(
+  Object.entries(STANDARD_SYMBOLOGY_OPTIONS).map(([key, options]) => [key, new Symbology({ name: key, ...options })])
+) as StandardSymbologies

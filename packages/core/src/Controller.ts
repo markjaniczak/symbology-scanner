@@ -4,13 +4,13 @@ import { encodeKey } from './utils'
 
 export class Controller {
   /** Internal timer to  */
-  private _timeout?: NodeJS.Timeout
+  private timeout?: NodeJS.Timeout
   /** Sequence that stores the scanned barcode */
-  private _sequence: string = ''
+  private sequence: string = ''
   /** Listeners attached to elements by this instance */
-  private _listener?: () => void
+  private listener?: () => void
   /** Time in milliseconds since page load when the last event was observed */
-  private _lastEventTime: number = 0
+  private lastEventTime: number = 0
   public config = {} as InternalConfig
   public handler?: InternalHandler
 
@@ -23,33 +23,40 @@ export class Controller {
    * Adds character(s) to the internal sequence
    * @param value
    */
-  addToSequence(value: string) {
-    this._sequence += encodeKey(value)
+  private addToSequence(value: string) {
+    const character = encodeKey(value)
+    if (
+      this.config.symbologies.some((symbology) => symbology.testCharacter(character)) ||
+      this.config.scannerOptions.prefix === character ||
+      this.config.scannerOptions.suffix === character
+    ) {
+      this.sequence += encodeKey(value)
+    }
   }
 
   /**
    * Validates whether a sequence was performed by scanning hardware.
    * Returns true if so, false otherwise.
    */
-  validateSequence() {
+  private validateSequence() {
     const now = performance.now()
-    const delay = now - this._lastEventTime
+    const delay = now - this.lastEventTime
 
     const { prefix, suffix, maxDelay } = this.config.scannerOptions
 
-    return this._sequence.startsWith(prefix) && this._sequence.endsWith(suffix) && delay <= maxDelay
+    return this.sequence.startsWith(prefix) && this.sequence.endsWith(suffix) && delay <= maxDelay
   }
 
   /**
    * Evaluates the sequence against the configured symbologies.
    */
-  evaluateSequence() {
+  private evaluateSequence() {
     const { prefix, suffix } = this.config.scannerOptions
-    const symbol = this._sequence.slice(prefix.length, suffix.length ? -1 * suffix.length : undefined)
+    const symbol = this.sequence.slice(prefix.length, suffix.length ? -1 * suffix.length : undefined)
 
-    const symbologies = Object.entries(this.config.symbologies).flatMap(([symbologyKey, symbologyPattern]) => {
-      const matches = symbol.match(symbologyPattern)
-      return matches !== null ? [symbologyKey] : []
+    const symbologies = this.config.symbologies.flatMap((symbology) => {
+      const isMatch = symbology.testSymbol(symbol)
+      return isMatch ? [symbology.name] : []
     })
 
     if (symbologies.length && this.handler) {
@@ -60,12 +67,12 @@ export class Controller {
   /**
    * Resets the internal sequence to the default state.
    */
-  resetSequence() {
-    this._sequence = ''
+  private resetSequence() {
+    this.sequence = ''
   }
 
-  keyDown(event: KeyboardEvent) {
-    clearTimeout(this._timeout)
+  private keyDown(event: KeyboardEvent) {
+    clearTimeout(this.timeout)
 
     const { config } = this
 
@@ -80,8 +87,8 @@ export class Controller {
       this.resetSequence()
     } else {
       this.addToSequence(event.key)
-      this._lastEventTime = performance.now()
-      this._timeout = setTimeout(() => {
+      this.lastEventTime = performance.now()
+      this.timeout = setTimeout(() => {
         if (this.validateSequence()) {
           this.evaluateSequence()
         }
@@ -116,9 +123,9 @@ export class Controller {
       target.addEventListener('keydown', this.keyDown.bind(this), this.config.eventOptions)
       const remove = () => {
         target.removeEventListener('keydown', this.keyDown.bind(this), this.config.eventOptions)
-        this._listener = undefined
+        this.listener = undefined
       }
-      this._listener = remove
+      this.listener = remove
       return remove
     }
   }
@@ -137,9 +144,9 @@ export class Controller {
    * destroyed (in React, when the component is unmounted.)
    */
   clean() {
-    if (this._listener) this._listener()
-    this._listener = undefined
-    clearTimeout(this._timeout)
-    this._timeout = undefined
+    if (this.listener) this.listener()
+    this.listener = undefined
+    clearTimeout(this.timeout)
+    this.timeout = undefined
   }
 }

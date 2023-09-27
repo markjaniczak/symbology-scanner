@@ -1,5 +1,5 @@
 import { Controller } from '@use-symbology-scanner/core'
-import { STANDARD_SYMBOLOGIES } from '@use-symbology-scanner/core/symbologies'
+import { STANDARD_SYMBOLOGIES, STANDARD_SYMBOLOGY_KEYS } from '@use-symbology-scanner/core/symbologies'
 
 describe('config', () => {
   test('should use the default config', () => {
@@ -13,7 +13,7 @@ describe('config', () => {
         capture: false
       },
       ignoreRepeats: true,
-      symbologies: STANDARD_SYMBOLOGIES,
+      symbologies: STANDARD_SYMBOLOGY_KEYS.map((v) => STANDARD_SYMBOLOGIES[v]),
       scannerOptions: {
         prefix: '',
         suffix: '',

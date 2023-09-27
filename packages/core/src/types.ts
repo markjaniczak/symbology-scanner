@@ -1,10 +1,11 @@
-import { StandardSymbologyKey, Symbology } from './symbologies'
+import { StandardSymbologyKey } from './symbologies'
+import { Symbology } from './Symbology'
 
 export type InternalHandler = (symbol: string, symbologies: string[]) => any | void
 
 export type InternalConfig = {
   target?: () => EventTarget
-  symbologies: Record<string, Symbology>
+  symbologies: Symbology[]
   ignoreRepeats: boolean
   enabled: boolean
   eventOptions: AddEventListenerOptions
@@ -25,7 +26,7 @@ export type Config = {
   /** The DOM node or react ref to attach events to. Defaults to the document. */
   target?: Target
   /** Symbologies to check for at the end of each scan. Defaults to all supported symbologies. */
-  symbologies?: Record<string, Symbology> | StandardSymbologyKey[]
+  symbologies?: Symbology[] | StandardSymbologyKey[]
   /** When set to true, repeated key strokes will clear the sequence. */
   ignoreRepeats?: boolean
   /** When set to false the handler will not fire. */

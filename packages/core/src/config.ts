@@ -1,5 +1,6 @@
-import { StandardSymbologyKey, STANDARD_SYMBOLOGIES, Symbology } from './symbologies'
+import { StandardSymbologyKey, STANDARD_SYMBOLOGIES, STANDARD_SYMBOLOGY_KEYS } from './symbologies'
 import { InternalConfig, Resolver, ResolverMap, Target } from './types'
+import { Symbology } from './Symbology'
 
 export const DEFAULT_PREFIX = ''
 export const DEFAULT_SUFFIX = ''
@@ -15,24 +16,14 @@ export const configResolver: { [K in keyof InternalConfig]: Resolver } = {
       return undefined
     }
   },
-  symbologies(value: Record<string, Symbology> | StandardSymbologyKey[] = STANDARD_SYMBOLOGIES) {
-    if (Array.isArray(value)) {
-      return value.reduce<Record<string, Symbology>>((result, symbology) => {
-        if (symbology in STANDARD_SYMBOLOGIES) {
-          result[symbology] = STANDARD_SYMBOLOGIES[symbology]
-        } else {
-          if (process.env.NODE_ENV === 'development') {
-            console.warn(
-              `[@use-symbology-scanner]: \`symbologies\` option received a non-standard symbology \`${symbology}\`.` +
-                `Provide your own pattern for \`${symbology}\`.`
-            )
-          }
-        }
-        return result
-      }, {})
-    } else {
-      return value
-    }
+  symbologies(value: Array<Symbology | StandardSymbologyKey> = [...STANDARD_SYMBOLOGY_KEYS]) {
+    return value.map((v) => {
+      if (typeof v === 'string') {
+        return STANDARD_SYMBOLOGIES[v]
+      } else {
+        return v
+      }
+    })
   },
   enabled(value = true) {
     return value

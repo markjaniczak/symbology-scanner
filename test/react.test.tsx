@@ -12,7 +12,23 @@ describe('controller', () => {
 
     render(<Interactive handler={mockFn} />)
 
-    '1234567890123'.split('').forEach((key) => {
+    ;[
+      '1',
+      '2',
+      '3',
+      '4',
+      'Escape',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '0',
+      'Shift',
+      '1',
+      '2',
+      '3'
+    ].forEach((key) => {
       fireEvent.keyDown(screen.getByTestId('test-el'), { key })
     })
 
