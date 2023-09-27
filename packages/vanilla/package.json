@@ -1,11 +1,11 @@
 {
   "name": "@use-symbology-scanner/vanilla",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/use-symbology-scanner-vanilla.cjs.js",
   "module": "dist/use-symbology-scanner-vanilla.esm.js",
   "license": "MIT",
   "dependencies": {
-    "@use-symbology-scanner/core": "1.0.1"
+    "@use-symbology-scanner/core": "1.0.2"
   },
   "author": "Mark Janiczak",
   "description": "A utility for detecting barcode scanner input in the browser.",
