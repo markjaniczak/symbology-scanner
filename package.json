@@ -1,6 +1,6 @@
 {
   "name": "@use-symbology-scanner/root",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "license": "MIT",
   "private": true,
   "workspaces": [
@@ -40,7 +40,7 @@
     "build": "preconstruct build",
     "prettier": "prettier --write",
     "tsc": "tsc --noEmit",
-    "ci:version": "yarn changeset version && yarn --filter \"@use-symbology-scanner/*\" install --lockfile-only",
+    "ci:version": "yarn changeset version && yarn install --filter \"@use-symbology-scanner/*\" --frozen-lockfile",
     "ci:publish": "yarn build && yarn changeset publish"
   },
   "preconstruct": {
