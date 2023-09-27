@@ -5,8 +5,6 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
-    - [React](#react)
-    - [Vanilla](#vanilla)
 - [Options](#options)
 - [Symbologies](#symbologies)
     - [Standard Symbologies](#standard-symbologies)
@@ -103,7 +101,7 @@ scanner.destroy() // clean up listeners
 | ignoreRepeats | boolean | Whether or not to ignore repeated keydown events. | `true` |
 | scannerOptions | object | Options that describe the behaviour of the hardware scanner. | `{ prefix: '', suffix: '', maxDelay: 20 }` |
 
-## `Symbologies`
+## Symbologies
 
 A Symbology is a defined method of representing numeric or alphabetic digits using bars and spaces that are easily scanned by computer systems. By default, all of the standard symbologies in the [table below](#standard-symbologies) are matched against the input.
 
@@ -167,7 +165,7 @@ const customSymbology = new Symbology({
 ```
 
 ## Supported hardware
-This library has not yet been tested on any hardware. If you have a scanner that you would like to test this library with, please open an issue or a pull request. Generally, this library *should* work with any hardware that emits keydown events. You can tweak the `scannerOptions` to match the behaviour of your hardware. A common configuration is:
+This library has not yet been tested on any hardware. If you have a scanner that you would like to test this library with, please open an issue or a pull request. Generally, this library *should* work with any hardware that emits keydown events. You can tweak the `scannerOptions` to match the behaviour of your hardware. For example, if your scanner emits a newline character after each scan, you can configure the `scannerOptions` like so:
 
 ```js
 const scannerOptions = {
@@ -176,6 +174,8 @@ const scannerOptions = {
     maxDelay: 20
 }
 ```
+
+Bluetooth scanners may require a longer `maxDelay` value due to latency. If you are using a bluetooth scanner, try increasing the `maxDelay` value to `100` or `200`.
 
 ## Contributing
 
