@@ -1,5 +1,12 @@
 # @use-symbology-scanner/vanilla
 
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies [0df9583]
+  - @use-symbology-scanner/core@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes
