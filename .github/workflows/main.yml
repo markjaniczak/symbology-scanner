@@ -1,0 +1,36 @@
+name: CI
+on:
+  push:
+    paths:
+      - '.github/workflows/main.yml'
+      - 'packages/**'
+      - 'test/**'
+      - 'package.json'
+      - 'yarn.lock'
+      - '!**.md'
+
+env:
+  CI: true
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        run: yarn build
+
+      - name: Test
+        run: yarn test
