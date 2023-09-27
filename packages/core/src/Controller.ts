@@ -9,8 +9,7 @@ export class Controller {
   private sequence: string = ''
   /** Listeners attached to elements by this instance */
   private listener?: () => void
-  /** Time in milliseconds since page load when the last event was observed */
-  private lastEventTime: number = 0
+
   public config = {} as InternalConfig
   public handler?: InternalHandler
 
@@ -20,8 +19,7 @@ export class Controller {
   }
 
   /**
-   * Adds character(s) to the internal sequence. Returns true if the character is a suffix.
-   * @param value
+   * Adds character(s) to the internal sequence. Returns true if the sequence was reset in the process.
    */
   private addToSequence(event: KeyboardEvent) {
     // Ignore modifier keys
@@ -38,20 +36,15 @@ export class Controller {
 
     if (matchesOneSymbology || matchesPrefix || matchesSuffix) {
       this.sequence += character
+      if (matchesSuffix) {
+        this.evaluateSequence()
+        this.resetSequence()
+        return true
+      }
+    } else {
+      this.resetSequence()
+      return true
     }
-  }
-
-  /**
-   * Validates whether a sequence was performed by scanning hardware.
-   * Returns true if so, false otherwise.
-   */
-  private validateSequence() {
-    const now = performance.now()
-    const delay = now - this.lastEventTime
-
-    const { prefix, suffix, maxDelay } = this.config.scannerOptions
-
-    return this.sequence.startsWith(prefix) && this.sequence.endsWith(suffix) && delay <= maxDelay
   }
 
   /**
@@ -59,6 +52,11 @@ export class Controller {
    */
   private evaluateSequence() {
     const { prefix, suffix } = this.config.scannerOptions
+
+    const isValid = this.sequence.startsWith(prefix) && this.sequence.endsWith(suffix)
+
+    if (!isValid) return
+
     const symbol = this.sequence.slice(prefix.length, suffix.length ? -1 * suffix.length : undefined)
 
     const symbologies = this.config.symbologies.flatMap((symbology) => {
@@ -78,6 +76,9 @@ export class Controller {
     this.sequence = ''
   }
 
+  /**
+   * Handles the `keydown` event.
+   */
   private keyDown(event: KeyboardEvent) {
     clearTimeout(this.timeout)
 
@@ -93,20 +94,18 @@ export class Controller {
     if (config.ignoreRepeats && event.repeat) {
       this.resetSequence()
     } else {
-      this.addToSequence(event)
-      this.lastEventTime = performance.now()
-      this.timeout = setTimeout(() => {
-        if (this.validateSequence()) {
+      const isReset = this.addToSequence(event)
+      if (!isReset) {
+        this.timeout = setTimeout(() => {
           this.evaluateSequence()
-        }
-        this.resetSequence()
-      }, config.scannerOptions.maxDelay)
+          this.resetSequence()
+        }, config.scannerOptions.maxDelay)
+      }
     }
   }
 
   /**
    * Attaches a new handler to the controller.
-   * @param handler
    */
   applyHandler(handler: InternalHandler) {
     this.handler = handler
@@ -114,12 +113,14 @@ export class Controller {
 
   /**
    * Attaches a new config to the controller.
-   * @param config
    */
   applyConfig(config: Config) {
     this.config = resolveWith(config, configResolver)
   }
 
+  /**
+   * Attaches a listener to the `config.target` element.
+   */
   bind() {
     let target: any
     if (this.config.target) {

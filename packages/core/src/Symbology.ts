@@ -6,9 +6,7 @@ export interface SymbologyOptions {
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Character_class
    */
   allowedCharacters: RegExp | string
-  /** The minimum character length of the symbology.
-   * @default 1
-   */
+  /** The minimum character length of the symbology. Defaults to `1`. */
   minLength?: number
   /** The maximum character length of the symbology.  */
   maxLength?: number

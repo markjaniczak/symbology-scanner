@@ -130,11 +130,11 @@ A Symbology is a defined method of representing numeric or alphabetic digits usi
 In order to only match against a subset of the standard symbologies, you can pass in an array of symbologies to the `symbologies` option:
 
 ```jsx
-import { STANDARD_SYMBOLOGIES } from '@use-symbology-scanner/core';
+import { STANDARD_SYMBOLOGY_KEYS } from '@use-symbology-scanner/core';
 
 const symbologies = [
-    STANDARD_SYMBOLOGIES['EAN-8'],
-    STANDARD_SYMBOLOGIES['EAN-13'],
+    STANDARD_SYMBOLOGY_KEYS['EAN-8'],
+    STANDARD_SYMBOLOGY_KEYS['EAN-13'],
 ]
 ```
 
