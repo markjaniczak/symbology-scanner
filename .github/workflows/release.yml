@@ -1,0 +1,44 @@
+name: Release
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '**/package.json'
+      - '.changeset/**'
+      - '.github/workflows/release.yml'
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Copy README file to React package
+        run: cp README.md packages/react
+
+      - name: Copy README file to vanilla package
+        run: cp README.md packages/vanilla
+
+      - name: Set up NPM auth token
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+      - name: Bump version
+        uses: changesets/action@v1
+        with:
+          version: yarn ci:version
+          publish: yarn ci:publish
+          commit: 'chore(deply): Release'
+          title: 'chore(deploy): Release'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
