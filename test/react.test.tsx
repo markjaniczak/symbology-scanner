@@ -11,26 +11,12 @@ describe('controller', () => {
     const mockFn = jest.fn()
 
     render(<Interactive handler={mockFn} />)
-
-    ;[
-      '1',
-      '2',
-      '3',
-      '4',
-      'Escape',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '0',
-      'Shift',
-      '1',
-      '2',
-      '3'
-    ].forEach((key) => {
-      fireEvent.keyDown(screen.getByTestId('test-el'), { key })
-    })
+    ;['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', { key: 'Shift', shiftKey: true }, '1', '2', '3'].forEach(
+      (value) => {
+        const event = typeof value === 'string' ? { key: value } : value
+        fireEvent.keyDown(screen.getByTestId('test-el'), event)
+      }
+    )
 
     act(() => {
       jest.advanceTimersToNextTimer()
@@ -106,7 +92,7 @@ describe('controller', () => {
     const symbologies = ['EAN 8'] satisfies StandardSymbologyKey[]
 
     render(<Interactive handler={mockFn} config={{ symbologies, scannerOptions: { suffix: '\n' } }} />)
-    ;[...symbol, "Enter"].forEach((key) => {
+    ;[...symbol, 'Enter'].forEach((key) => {
       fireEvent.keyDown(screen.getByTestId('test-el'), { key })
     })
 

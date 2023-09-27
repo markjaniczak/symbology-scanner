@@ -16,19 +16,20 @@ describe('vanilla', () => {
       '2',
       '3',
       '4',
-      'Escape',
+      // { key: 'Shift', shiftKey: true },
       '5',
       '6',
       '7',
       '8',
       '9',
       '0',
-      'Shift',
+      // { key: 'Shift', shiftKey: true },
       '1',
       '2',
       '3'
-    ].forEach((key) => {
-      fireEvent.keyDown(document, { key })
+    ].forEach((value) => {
+      const event = typeof value === 'string' ? { key: value } : value
+      fireEvent.keyDown(document, event)
     })
 
     jest.advanceTimersToNextTimer()

@@ -20,17 +20,24 @@ export class Controller {
   }
 
   /**
-   * Adds character(s) to the internal sequence
+   * Adds character(s) to the internal sequence. Returns true if the character is a suffix.
    * @param value
    */
-  private addToSequence(value: string) {
-    const character = encodeKey(value)
-    if (
-      this.config.symbologies.some((symbology) => symbology.testCharacter(character)) ||
-      this.config.scannerOptions.prefix === character ||
-      this.config.scannerOptions.suffix === character
-    ) {
-      this.sequence += encodeKey(value)
+  private addToSequence(event: KeyboardEvent) {
+    // Ignore modifier keys
+    if (event.shiftKey && event.key === 'Shift') return
+    if (event.ctrlKey && event.key === 'Control') return
+    if (event.altKey && event.key === 'Alt') return
+    if (event.metaKey && event.key === 'Meta') return
+
+    const character = encodeKey(event.key)
+
+    const matchesOneSymbology = this.config.symbologies.some((symbology) => symbology.testCharacter(character))
+    const matchesPrefix = character === this.config.scannerOptions.prefix
+    const matchesSuffix = character === this.config.scannerOptions.suffix
+
+    if (matchesOneSymbology || matchesPrefix || matchesSuffix) {
+      this.sequence += character
     }
   }
 
@@ -86,7 +93,7 @@ export class Controller {
     if (config.ignoreRepeats && event.repeat) {
       this.resetSequence()
     } else {
-      this.addToSequence(event.key)
+      this.addToSequence(event)
       this.lastEventTime = performance.now()
       this.timeout = setTimeout(() => {
         if (this.validateSequence()) {

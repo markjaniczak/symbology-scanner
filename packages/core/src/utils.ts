@@ -4,6 +4,8 @@ export function encodeKey(key: string) {
       return '\n'
     case 'Tab':
       return '\t'
+    case 'Spacebar':
+      return ' '
     default:
       return key
   }
