@@ -4,12 +4,11 @@ import { RefObject, useEffect, useMemo } from 'react'
 
 export const useSymbologyScanner = (
   handler: InternalHandler,
-  config: Config = {},
-  target: EventTarget | RefObject<EventTarget>
+  config: Config & { target?: RefObject<EventTarget> } = {}
 ): void => {
   const controller = useMemo(() => new Controller(), [])
   controller.applyHandler(handler)
-  controller.applyConfig({ ...config, target })
+  controller.applyConfig(config)
 
   useEffect(controller.effect.bind(controller))
 

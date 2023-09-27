@@ -5,7 +5,7 @@ export interface SymbologyOptions {
   /** A regex pattern expressing the allowed characters of this symbology. Must be a character class.
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Character_class
    */
-  allowedCharacters: RegExp
+  allowedCharacters: RegExp | string
   /** The minimum character length of the symbology.
    * @default 1
    */
@@ -31,7 +31,8 @@ export class Symbology {
     this.maxLength = maxLength
     if (!isCharacterClass(allowedCharacters))
       throw new Error('allowedCharacters must be a character class')
-    this.allowedCharacters = new RegExp(allowedCharacters.source)
+    const pattern = allowedCharacters instanceof RegExp ? allowedCharacters.source : allowedCharacters
+    this.allowedCharacters = new RegExp(pattern)
   }
 
   protected get symbolPattern() {
