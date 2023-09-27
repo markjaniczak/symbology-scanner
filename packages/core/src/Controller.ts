@@ -37,6 +37,7 @@ export class Controller {
     if (matchesOneSymbology || matchesPrefix || matchesSuffix) {
       this.sequence += character
       if (matchesSuffix) {
+        clearTimeout(this.timeout)
         this.evaluateSequence()
         this.resetSequence()
         return true
