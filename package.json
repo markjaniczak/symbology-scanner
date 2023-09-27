@@ -24,7 +24,9 @@
     "prettier": "^2.8.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "ci:version": "yarn changeset version && yarn --filter \"@use-symbology-scanner/*\" install --lockfile-only",
+    "ci:publish": "yarn build && yarn changeset publish"
   },
   "jest": {
     "testEnvironment": "jsdom",
