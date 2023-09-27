@@ -5,9 +5,26 @@
   "module": "dist/use-symbology-scanner-react.esm.js",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^16.8.0"
+    "react": ">= 16.8.0"
   },
   "dependencies": {
     "@use-symbology-scanner/core": "1.0.0"
+  },
+  "author": "Mark Janiczak",
+  "description": "React hook for detecting barcode scanner input in the browser.",
+  "keywords": [
+    "react",
+    "hook",
+    "barcode",
+    "scanner",
+    "symbology",
+    "use-symbology-scanner"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markjaniczak/symbology-scanner.git"
+  },
+  "bugs": {
+    "url": "https://github.com/markjaniczak/symbology-scanner/issues"
   }
 }
