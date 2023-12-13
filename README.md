@@ -53,7 +53,7 @@ export const App = () => {
         console.log(`Scanned ${symbol}`)
     }
 
-    useSymbologyScanner(handleSymbologies, { target: ref })
+    useSymbologyScanner(handleSymbol, { target: ref })
 
     return (
         <div ref={ref}>
