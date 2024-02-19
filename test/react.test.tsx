@@ -1,22 +1,24 @@
 import React from 'react'
-import { render, screen, fireEvent, act, createEvent } from '@testing-library/react'
+import { render, screen, fireEvent, act, createEvent, configure } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { Interactive } from './Interactive'
 import { StandardSymbologyKey } from '@use-symbology-scanner/core/src/symbologies'
 
 jest.useFakeTimers()
 
+configure({ reactStrictMode: true })
+
 describe('controller', () => {
   test('should call the handler on a scanned symbol', () => {
     const mockFn = jest.fn()
 
     render(<Interactive handler={mockFn} />)
-    ;['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', { key: 'Shift', shiftKey: true }, '1', '2', '3'].forEach(
-      (value) => {
-        const event = typeof value === 'string' ? { key: value } : value
-        fireEvent.keyDown(screen.getByTestId('test-el'), event)
-      }
-    )
+      ;['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', { key: 'Shift', shiftKey: true }, '1', '2', '3'].forEach(
+        (value) => {
+          const event = typeof value === 'string' ? { key: value } : value
+          fireEvent.keyDown(screen.getByTestId('test-el'), event)
+        }
+      )
 
     act(() => {
       jest.advanceTimersToNextTimer()
@@ -63,9 +65,9 @@ describe('controller', () => {
     const symbologies = ['EAN 8'] satisfies StandardSymbologyKey[]
 
     render(<Interactive handler={mockFn} config={{ symbologies, scannerOptions: { prefix: '\t' } }} />)
-    ;['Tab', ...symbol].forEach((key) => {
-      fireEvent.keyDown(screen.getByTestId('test-el'), { key })
-    })
+      ;['Tab', ...symbol].forEach((key) => {
+        fireEvent.keyDown(screen.getByTestId('test-el'), { key })
+      })
 
     act(() => {
       jest.advanceTimersToNextTimer()
@@ -74,9 +76,9 @@ describe('controller', () => {
     expect(mockFn).toHaveBeenCalledWith(symbol, symbologies)
 
     mockFn.mockClear()
-    ;[...symbol].forEach((key) => {
-      fireEvent.keyDown(screen.getByTestId('test-el'), { key })
-    })
+      ;[...symbol].forEach((key) => {
+        fireEvent.keyDown(screen.getByTestId('test-el'), { key })
+      })
 
     act(() => {
       jest.advanceTimersToNextTimer()
@@ -92,9 +94,9 @@ describe('controller', () => {
     const symbologies = ['EAN 8'] satisfies StandardSymbologyKey[]
 
     render(<Interactive handler={mockFn} config={{ symbologies, scannerOptions: { suffix: '\n' } }} />)
-    ;[...symbol, 'Enter'].forEach((key) => {
-      fireEvent.keyDown(screen.getByTestId('test-el'), { key })
-    })
+      ;[...symbol, 'Enter'].forEach((key) => {
+        fireEvent.keyDown(screen.getByTestId('test-el'), { key })
+      })
 
     act(() => {
       jest.advanceTimersToNextTimer()
@@ -103,9 +105,9 @@ describe('controller', () => {
     expect(mockFn).toHaveBeenCalledWith(symbol, symbologies)
 
     mockFn.mockClear()
-    ;[...symbol].forEach((key) => {
-      fireEvent.keyDown(screen.getByTestId('test-el'), { key })
-    })
+      ;[...symbol].forEach((key) => {
+        fireEvent.keyDown(screen.getByTestId('test-el'), { key })
+      })
 
     act(() => {
       jest.advanceTimersToNextTimer()
