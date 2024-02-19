@@ -81,6 +81,7 @@ export class Controller {
    * Handles the `keydown` event.
    */
   private keyDown(event: KeyboardEvent) {
+
     clearTimeout(this.timeout)
 
     const { config } = this
@@ -145,7 +146,7 @@ export class Controller {
    */
   effect() {
     this.bind()
-    return this.clean()
+    return () => this.clean()
   }
 
   /**
@@ -153,6 +154,7 @@ export class Controller {
    * destroyed (in React, when the component is unmounted.)
    */
   clean() {
+    this.resetSequence()
     if (this.listener) this.listener()
     this.listener = undefined
     clearTimeout(this.timeout)
