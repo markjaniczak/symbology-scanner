@@ -67,6 +67,7 @@ export class Controller {
 
     if (symbologies.length && this.handler) {
       this.handler(symbol, symbologies)
+      this.resetSequence()
     }
   }
 
