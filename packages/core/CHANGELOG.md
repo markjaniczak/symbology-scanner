@@ -1,5 +1,11 @@
 # @use-symbology-scanner/core
 
+## 1.1.0
+
+### Minor Changes
+
+- 15fd031: Fixed event listener in controller not cleaning correctly
+
 ## 1.0.3
 
 ### Patch Changes
