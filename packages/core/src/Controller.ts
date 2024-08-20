@@ -81,7 +81,6 @@ export class Controller {
    * Handles the `keydown` event.
    */
   private keyDown(event: KeyboardEvent) {
-
     clearTimeout(this.timeout)
 
     const { config } = this
@@ -130,9 +129,10 @@ export class Controller {
     }
 
     if (this.config.enabled && target) {
-      target.addEventListener('keydown', this.keyDown.bind(this), this.config.eventOptions)
+      const onKeyDown = this.keyDown.bind(this)
+      target.addEventListener('keydown', onKeyDown, this.config.eventOptions)
       const remove = () => {
-        target.removeEventListener('keydown', this.keyDown.bind(this), this.config.eventOptions)
+        target.removeEventListener('keydown', onKeyDown, this.config.eventOptions)
         this.listener = undefined
       }
       this.listener = remove
